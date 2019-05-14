@@ -1,59 +1,56 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, useState } from "react";
 import SelectBox from "./SelectBox";
 import RocketDetail from "./RocketDetail";
 import Status from "./Status";
 
 
-export class Rocket extends Component {
-	state = {
-		selectedRocket: "falcon1",
-		status: "works",
-		destroyed: false
-	};
+const Rocket = () => {
 
-	handleChangeRocket = rocket_id => {
-		this.setState({
-			selectedRocket: rocket_id
-		})
+	// state = {
+	// 	selectedRocket: "falcon1",
+	// 	status: "works",
+	// 	destroyed: false
+    // };
+    
+    const [selectedRocket, setSelectedRocket] = useState("falcon1");
+    const [status, setStatus] = useState("works");
+    const [destroyed, setDestroyed] = useState(false);
+
+
+	const handleChangeRocket = rocket_id => {
+        setSelectedRocket(rocket_id);
 	}
 
-	handleChangeStatus = () => {
-		this.setState({
-			status: "broken"
-		})
+	const handleChangeStatus = () => {
+        setStatus("broken");
 	}
 
-	handleDestruction = () => {
-		this.setState({
-			destroyed: true
-		})
+	const handleDestruction = () => {
+		setDestroyed(true);
 	}
 
-	render() {
-		const { selectedRocket, status, destroyed } = this.state;
-
-		return (
-			<div>
-                <h1>SpaceX</h1>
-                {
-                    destroyed ? <div>Destructed..</div> :
-                    <Fragment>
-                        <SelectBox 
-                            onSelectBoxChange={this.handleChangeRocket}
-                        />
-                        <RocketDetail 
-                            selectedRocket={selectedRocket}
-                        />
-                        <Status
-                            status={status}
-                            onClick={this.handleChangeStatus}
-                            onDestruct={this.handleDestruction}
-                        />
-                    </Fragment>
-                }
-			</div>
-		);
-	}
+    return (
+        <div>
+            <h1>SpaceX</h1>
+            {
+                destroyed ? <div>Destructed..</div> :
+                <Fragment>
+                    <SelectBox 
+                        onSelectBoxChange={handleChangeRocket}
+                    />
+                    <RocketDetail 
+                        selectedRocket={selectedRocket}
+                    />
+                    <Status
+                        status={status}
+                        onClick={handleChangeStatus}
+                        onDestruct={handleDestruction}
+                    />
+                </Fragment>
+            }
+        </div>
+    );
+	
 }
 
 export default Rocket;
