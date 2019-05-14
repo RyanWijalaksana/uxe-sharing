@@ -1,58 +1,40 @@
 import React, { Component, Fragment, useState, useEffect } from "react";
+import useHttp from "./http";
 
 const SelectBox = props => {
-    
-    const [rockets, setRockets] = useState([]);
-    const [loading, setLoading] = useState(false);
-    
-    useEffect(() => {
 
-        setLoading(true);
+    const [loading, data] = useHttp(
+        "https://api.spacexdata.com/v3/rockets",
+        []
+    );
 
-        fetch("https://api.spacexdata.com/v3/rockets")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to fetch");
-            }
-            return response.json();
-        })
-        .then(data => {
-            //console.log("data", data);
-            setRockets(data);
-            setLoading(false)
-        })
-        .catch(error => console.log("error : ", error));
+    const handleChange = e => {
+        const { onSelectBoxChange } = props;
 
-    },[]);
+        if (onSelectBoxChange) {
+            onSelectBoxChange(e.target.value);
+        }
+    };
 
-	const handleChange = e => {
-		const { onSelectBoxChange } = props;
-
-		if(onSelectBoxChange){
-			onSelectBoxChange(e.target.value);
-		}
-	}
+    //console.log("data", data);
 
     return (
         <Fragment>
             {loading ? (
                 <div>Loading..</div>
             ) : (
-                <select 
-                    name="" 
-                    id=""
-                    onChange={e => handleChange(e)}
-                >
-                {rockets.map((rocket, index) => (
-                    <option key={rocket.id} value={rocket.rocket_id}>
-                        {rocket.rocket_name}
-                    </option>
-                ))}
+                <select name="" id="" onChange={e => handleChange(e)}>
+                    {data &&
+                        data.length > 0 &&
+                        data.map((rocket, index) => (
+                            <option key={rocket.id} value={rocket.rocket_id}>
+                                {rocket.rocket_name}
+                            </option>
+                        ))}
                 </select>
             )}
         </Fragment>
     );
-	
-}
+};
 
 export default SelectBox;

@@ -1,31 +1,11 @@
 import React, { Component, PureComponent, useState, useEffect } from "react";
+import useHttp from "./http";
 
 const RocketDetail = ({ selectedRocket }) => {
-    const [rocketDetail, setRocketDetail] = useState({});
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        console.log("Did update");
-
-        const fetchData = () => {
-            setLoading(true);
-
-            fetch(`https://api.spacexdata.com/v3/rockets/${selectedRocket}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Failed to fetch");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    setRocketDetail(data);
-                    setLoading(false);
-                })
-                .catch(error => console.log("error : ", error));
-        };
-
-        fetchData();
-    }, [selectedRocket]);
+    const [loading, data] = useHttp(
+        `https://api.spacexdata.com/v3/rockets/${selectedRocket}`,
+        [selectedRocket]
+    );
 
     useEffect(() => {
         return () => {
@@ -33,7 +13,7 @@ const RocketDetail = ({ selectedRocket }) => {
         };
     }, []);
 
-    console.log("rendering");
+    console.log("data", data);
 
     return (
         <div style={{ width: "500px", margin: "50px auto" }}>
@@ -41,8 +21,8 @@ const RocketDetail = ({ selectedRocket }) => {
                 <div>Loading...</div>
             ) : (
                 <div>
-                    <h3>{rocketDetail.rocket_name}</h3>
-                    <p>{rocketDetail.description}</p>
+                    <h3>{data.rocket_name}</h3>
+                    <p>{data.description}</p>
                 </div>
             )}
         </div>
