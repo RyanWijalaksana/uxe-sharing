@@ -1,4 +1,11 @@
-import React, { Component, PureComponent, useState, useEffect } from "react";
+import React, {
+    Component,
+    PureComponent,
+    useState,
+    useEffect,
+    useContext
+} from "react";
+import ThemeContext from "../context/theme-context";
 import useHttp from "./http";
 
 const RocketDetail = ({ selectedRocket }) => {
@@ -13,7 +20,7 @@ const RocketDetail = ({ selectedRocket }) => {
         };
     }, []);
 
-    console.log("data", data);
+    const context = useContext(ThemeContext);
 
     return (
         <div style={{ width: "500px", margin: "50px auto" }}>
@@ -23,6 +30,7 @@ const RocketDetail = ({ selectedRocket }) => {
                 <div>
                     <h3>{data.rocket_name}</h3>
                     <p>{data.description}</p>
+                    <p>Theme: {context}</p>
                 </div>
             )}
         </div>

@@ -3,6 +3,8 @@ import SelectBox from "./SelectBox";
 import RocketDetail from "./RocketDetail";
 import Status from "./Status";
 
+import ThemeContext from "../context/theme-context";
+
 
 const Rocket = () => {
 
@@ -30,25 +32,27 @@ const Rocket = () => {
 	}
 
     return (
-        <div>
-            <h1>SpaceX</h1>
-            {
-                destroyed ? <div>Destructed..</div> :
-                <Fragment>
-                    <SelectBox 
-                        onSelectBoxChange={handleChangeRocket}
-                    />
-                    <RocketDetail 
-                        selectedRocket={selectedRocket}
-                    />
-                    <Status
-                        status={status}
-                        onClick={handleChangeStatus}
-                        onDestruct={handleDestruction}
-                    />
-                </Fragment>
-            }
-        </div>
+        <ThemeContext.Provider value={"light"}>
+            <div>
+                <h1>SpaceX</h1>
+                {
+                    destroyed ? <div>Destructed..</div> :
+                    <Fragment>
+                        <SelectBox 
+                            onSelectBoxChange={handleChangeRocket}
+                        />
+                        <RocketDetail 
+                            selectedRocket={selectedRocket}
+                        />
+                        <Status
+                            status={status}
+                            onClick={handleChangeStatus}
+                            onDestruct={handleDestruction}
+                        />
+                    </Fragment>
+                }
+            </div>
+        </ThemeContext.Provider>
     );
 	
 }
